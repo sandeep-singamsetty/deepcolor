@@ -53,11 +53,13 @@ class Color():
                         + self.l1_scaling * tf.reduce_mean(tf.abs(self.real_images - self.generated_images))
 
         t_vars = tf.trainable_variables()
+        tf.get_variable_scope().reuse_variables()
         self.d_vars = [var for var in t_vars if 'd_' in var.name]
         self.g_vars = [var for var in t_vars if 'g_' in var.name]
 
         self.d_optim = tf.train.AdamOptimizer(0.0002, beta1=0.5).minimize(self.d_loss, var_list=self.d_vars)
         self.g_optim = tf.train.AdamOptimizer(0.0002, beta1=0.5).minimize(self.g_loss, var_list=self.g_vars)
+        tf.get_variable_scope().reuse == False
 
 
     def discriminator(self, image, y=None, reuse=False):
